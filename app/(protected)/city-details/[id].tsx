@@ -1,4 +1,3 @@
-import { BoxProps } from "@/src/components/Box";
 import { CityDetailsHeader } from "@/src/components/containers/CityDetailsHeader";
 import { CityDetailsInfo } from "@/src/components/containers/CityDetailsInfo";
 import { CityDetailsMap } from "@/src/components/containers/CityDetailsMap";
@@ -17,14 +16,14 @@ export default function CityDetailsScreen() {
 
   if (!city) {
     return (
-      <Screen {...noCityBoxStyle}>
+      <Screen alignItems="center" justifyContent="center">
         <Text>City not found</Text>
       </Screen>
     );
   }
 
   return (
-    <Screen {...noPaddingBoxStyle}>
+    <Screen paddingHorizontal={0} scrollable>
       <CityDetailsHeader
         id={city.id}
         coverImage={city.coverImage}
@@ -36,7 +35,9 @@ export default function CityDetailsScreen() {
         description={city.description}
       />
       <Divider paddingHorizontal="padding" />
-      <CityDetailsTouristAttractions />
+      <CityDetailsTouristAttractions
+        touristAttractions={city.touristAttractions}
+      />
       <Divider paddingHorizontal="padding" />
       <CityDetailsMap />
       <Divider paddingHorizontal="padding" />
@@ -44,12 +45,3 @@ export default function CityDetailsScreen() {
     </Screen>
   );
 }
-
-const noCityBoxStyle: BoxProps = {
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-const noPaddingBoxStyle: BoxProps = {
-  paddingHorizontal: 0,
-};

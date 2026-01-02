@@ -40,30 +40,28 @@ export default function HomeScreen() {
   }
 
   return (
-    <Screen>
-      <Box style={{ paddingHorizontal: 0 }}>
-        <FlatList
-          ref={flatListRef}
-          contentContainerStyle={{
-            gap: spacing.padding,
-            paddingTop: top,
-            paddingBottom: spacing.padding,
-          }}
-          data={cityPreviewList}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          ListHeaderComponent={
-            <CityFilter
-              categories={categories}
-              cityName={cityName}
-              onChangeCityName={setCityName}
-              selectCategoryId={selectedCategoryId}
-              onChangeSelectCategoryId={setSelectedCategoryId}
-            />
-          }
-        />
-      </Box>
+    <Screen paddingHorizontal={0}>
+      <FlatList
+        ref={flatListRef}
+        contentContainerStyle={{
+          gap: spacing.padding,
+          paddingTop: top,
+          paddingBottom: spacing.padding,
+        }}
+        data={cityPreviewList}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <CityFilter
+            categories={categories}
+            cityName={cityName}
+            onChangeCityName={setCityName}
+            selectCategoryId={selectedCategoryId}
+            onChangeSelectCategoryId={setSelectedCategoryId}
+          />
+        }
+      />
     </Screen>
   );
 }
