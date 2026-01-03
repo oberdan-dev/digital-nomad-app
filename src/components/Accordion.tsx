@@ -1,5 +1,10 @@
-import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
+import Animated, {
+  SharedValue,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import theme from "../theme/theme";
 import { Box } from "./Box";
 import { Icon } from "./Icon";
@@ -11,12 +16,17 @@ type AccordionProps = {
 };
 
 export function Accordion({ title, description }: AccordionProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = useSharedValue(false);
+
+  function handleOpenPress() {
+    isOpen.value = !isOpen.value;
+  }
+
   return (
-    <Pressable onPress={() => setIsOpen(!isOpen)}>
+    <Pressable onPress={handleOpenPress}>
       <View>
         <AccordionHeader title={title} />
-        {isOpen && <AccordionBody description={description} />}
+        <AccordionBody description={description} isOpen={isOpen} />
       </View>
     </Pressable>
   );
@@ -33,11 +43,32 @@ function AccordionHeader({ title }: { title: string }) {
   );
 }
 
-function AccordionBody({ description }: { description: string }) {
+function AccordionBody({
+  description,
+  isOpen,
+}: {
+  description: string;
+  isOpen: SharedValue<boolean>;
+}) {
+  const height = useSharedValue(0);
+
+  const derivedHeight = useDerivedValue(() =>
+    withTiming(height.value * Number(isOpen.value), {
+      duration: 500,
+    })
+  );
+
   return (
-    <View style={styles.body}>
-      <Text>{description}</Text>
-    </View>
+    <Animated.View style={{ overflow: "hidden", height: derivedHeight }}>
+      <View
+        style={styles.body}
+        onLayout={(event) => {
+          height.value = event.nativeEvent.layout.height;
+        }}
+      >
+        <Text>{description}</Text>
+      </View>
+    </Animated.View>
   );
 }
 
@@ -52,6 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadii.default,
   },
   body: {
+    position: "absolute",
     paddingHorizontal: 16,
     paddingBottom: 16,
     backgroundColor: theme.colors.gray1,
