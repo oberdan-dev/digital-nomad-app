@@ -10,6 +10,7 @@ import { CityPreview } from "@/src/types";
 import { useScrollToTop } from "@react-navigation/native";
 import { useRef, useState } from "react";
 import { FlatList, ListRenderItemInfo } from "react-native";
+import Animated, { FadingTransition } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -20,7 +21,7 @@ export default function HomeScreen() {
   const debouncedCityName = useDebounce(cityName);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
-    null
+    null,
   );
 
   const { cityPreviewList } = useCities({
@@ -41,7 +42,8 @@ export default function HomeScreen() {
 
   return (
     <Screen paddingHorizontal={0}>
-      <FlatList
+      <Animated.FlatList
+        itemLayoutAnimation={FadingTransition.duration(500)}
         ref={flatListRef}
         contentContainerStyle={{
           gap: spacing.padding,
