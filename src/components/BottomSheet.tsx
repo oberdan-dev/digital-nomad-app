@@ -9,7 +9,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-type BottomSheetProps = {
+export type BottomSheetProps = {
   onPress: () => void;
   isOpen: SharedValue<boolean>;
   duration?: number;
@@ -19,7 +19,7 @@ export function BottomSheet({
   children,
   onPress,
   isOpen,
-  duration = 2000,
+  duration = 600,
 }: PropsWithChildren<BottomSheetProps>) {
   const height = useSharedValue(0);
 
